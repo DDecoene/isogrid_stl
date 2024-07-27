@@ -58,39 +58,29 @@ def create_isogrid_stl(
 
     # Fill the width
     y_offset = 0
-    # while y_offset < height:
-    x_offset = 0
-    while x_offset < width:
-        # Left triangle
-        p1 = (x_offset, y_offset)
-        p2 = (x_offset, base)
-        p3 = (x_offset + base, base)
-        add_triangle(p1, p2, p3)
+    while y_offset < height:
+        x_offset = 0
+        while x_offset < width:
+            # Left triangle
+            p1 = (x_offset, y_offset)
+            p2 = (x_offset, y_offset + base)
+            p3 = (x_offset + base, y_offset + base)
+            add_triangle(p1, p2, p3)
 
-        # Right triangle
-        p1 = (x_offset + base, base)
-        p2 = (x_offset + base * 2, base)
-        p3 = (x_offset + base * 2, y_offset)
-        add_triangle(p1, p2, p3)
+            # Right triangle
+            p1 = (x_offset + base, y_offset + base)
+            p2 = (x_offset + base * 2, y_offset + base)
+            p3 = (x_offset + base * 2, y_offset)
+            add_triangle(p1, p2, p3)
 
-        # top triangle
-        p1 = (x_offset, y_offset)
-        p2 = (x_offset + base * 2, y_offset)
-        p3 = (x_offset + base, y_offset + base)
-        add_triangle(p1, p2, p3)
+            # top triangle
+            p1 = (x_offset, y_offset)
+            p2 = (x_offset + base * 2, y_offset)
+            p3 = (x_offset + base, y_offset + base)
+            add_triangle(p1, p2, p3)
 
-        x_offset += base * 2
-    #    y_offset += height_triangle
-    #         # Second triangle (rotated 180 degrees)
-    #         x_offset += base / 2
-    #         p1 = (x_offset, y_offset)
-    #         p2 = (x_offset + base, y_offset)
-    #         p3 = (x_offset + base / 2, y_offset - height_triangle)
-    #         add_triangle(p1, p2, p3)
-
-    #         x_offset += base / 2
-
-    #     y_offset += height_triangle
+            x_offset += base * 2
+        y_offset += base
 
     # Write the binary STL file
     with open(filename, "wb") as f:
