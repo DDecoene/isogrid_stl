@@ -22,9 +22,9 @@ def create_isogrid_stl(
 
     def add_triangle(p1, p2, p3):
         # Bottom face
-        add_facet((p1[0], p1[1], 0), (p2[0], p2[1], 0), (p3[0], p3[1], 0))
+        # add_facet((p1[0], p1[1], 0), (p2[0], p2[1], 0), (p3[0], p3[1], 0))
         # Top face
-        add_facet((p1[0], p1[1], depth), (p2[0], p2[1], depth), (p3[0], p3[1], depth))
+        # add_facet((p1[0], p1[1], depth), (p2[0], p2[1], depth), (p3[0], p3[1], depth))
         # Side faces
         add_rect(
             (p1[0], p1[1], 0),
@@ -58,29 +58,50 @@ def create_isogrid_stl(
 
     # Fill the width
     y_offset = 0
+    row_number = 1
     while y_offset < height:
         x_offset = 0
         while x_offset < width:
-            # Left triangle
-            p1 = (x_offset, y_offset)
-            p2 = (x_offset, y_offset + base)
-            p3 = (x_offset + base, y_offset + base)
-            add_triangle(p1, p2, p3)
+            if (row_number % 2): #odd number
+                # Left triangle
+                p1 = (x_offset, y_offset)
+                p2 = (x_offset, y_offset + base)
+                p3 = (x_offset + base, y_offset)
+                add_triangle(p1, p2, p3)
 
-            # Right triangle
-            p1 = (x_offset + base, y_offset + base)
-            p2 = (x_offset + base * 2, y_offset + base)
-            p3 = (x_offset + base * 2, y_offset)
-            add_triangle(p1, p2, p3)
+                # Right triangle
+                p1 = (x_offset + base*2, y_offset)
+                p2 = (x_offset + base * 2, y_offset+ base)
+                p3 = (x_offset + base, y_offset)
+                add_triangle(p1, p2, p3)
 
-            # top triangle
-            p1 = (x_offset, y_offset)
-            p2 = (x_offset + base * 2, y_offset)
-            p3 = (x_offset + base, y_offset + base)
-            add_triangle(p1, p2, p3)
+                # # top triangle
+                # p1 = (x_offset, y_offset)
+                # p2 = (x_offset + base * 2, y_offset)
+                # p3 = (x_offset + base, y_offset + base)
+                # add_triangle(p1, p2, p3)
+            else : #even number
+                # Left triangle
+                p1 = (x_offset, y_offset)
+                p2 = (x_offset, y_offset + base)
+                p3 = (x_offset + base, y_offset +base)
+                add_triangle(p1, p2, p3)
+
+                # # Right triangle
+                p1 = (x_offset+base*2, y_offset)
+                p2 = (x_offset + base*2, y_offset + base)
+                p3 = (x_offset + base, y_offset+base)
+                add_triangle(p1, p2, p3)
+
+                # top triangle
+                # p1 = (x_offset, y_offset)
+                # p2 = (x_offset + base * 2, y_offset)
+                # p3 = (x_offset + base, y_offset + base)
+                # add_triangle(p1, p2, p3)
 
             x_offset += base * 2
         y_offset += base
+        row_number += 1
 
     # Write the binary STL file
     with open(filename, "wb") as f:
